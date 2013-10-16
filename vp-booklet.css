@@ -1,0 +1,109 @@
+/*
+  VPBooklet
+  A light-weight, extensible, HTML5/JS/CSS3 application framework
+
+  vp-booklet.css
+  simple base-styles for VPBooklet-based apps
+  NB these styles are a guide, and intended to be overridden or discarded
+
+  (c) 2011-13, Steve Sims, John-Paul Harold, and Vert Pixels Ltd.
+  All Rights Reserved
+
+  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+  1) Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+  2) Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+* {
+    -ms-user-select: none;
+  user-select: none;
+    -ms-user-drag: none;
+  user-drag: none;
+  
+  box-sizing: border-box;
+}
+
+/* main */
+
+html {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+#navigation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#navigation > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent no-repeat left top;
+  overflow: hidden;
+}
+
+/* Styles for VPSlider and VPElementSlider */
+.vp-page-holder,
+.vp-element-holder {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.vp-slider-page {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
+
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: flat;
+}
+
+.vp-element {
+  position: absolute;
+  display: block;
+  transition-property: transform, top, left, opacity;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
+}
+
+.vp-element-holder.moving > .vp-element,
+.vp-page-holder.moving > .vp-slider-page {
+  transition-duration: 0ms;
+}
+
+/* generic scrollable class */
+.scrollable {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-scrolling: touch;
+}
