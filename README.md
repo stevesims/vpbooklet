@@ -20,13 +20,14 @@ Basic documentation will be added soon, as will some basic code examples.
 ## Real-life Examples
 
 VPBooklet is the technology behind several apps on the iTunes and Google Play stores.
-[The Blur App](https://itunes.apple.com/gb/app/the-blur-app/id545492189?mt=8)
-[FairFX app for iOS](https://itunes.apple.com/gb/app/fairfx/id535758572?mt=8)
-[FairFX app for Android](https://play.google.com/store/apps/details?id=com.fairfx.retail.org&hl=en)
+
+* [The Blur App](https://itunes.apple.com/gb/app/the-blur-app/id545492189?mt=8)
+* [FairFX app for iOS](https://itunes.apple.com/gb/app/fairfx/id535758572?mt=8)
+* [FairFX app for Android](https://play.google.com/store/apps/details?id=com.fairfx.retail.org&hl=en)
 
 There are several more apps that use VPBooklet that will be released soon, and we will add more details about them when we can.
 
-On the web, the Tinie Tempah Demonstration album promo site is powered by VPBooket, which also makes use of our animation library collection, VPAnimEngine.
+On the web, the Tinie Tempah Demonstration album promo site is powered by VPBooklet, which also makes use of our animation library collection, VPAnimEngine.
 
 ## Compatibility
 
