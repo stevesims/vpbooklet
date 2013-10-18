@@ -27,7 +27,7 @@ VPBooklet is the technology behind several apps on the iTunes and Google Play st
 
 There are several more apps that use VPBooklet that will be released soon, and we will add more details about them when we can.
 
-On the web, the Tinie Tempah Demonstration album promo site is powered by VPBooklet, which also makes use of our animation library collection, VPAnimEngine.
+On the web, the [Tinie Tempah Demonstration album promo site](http://listen.tinietempah.com/) is powered by VPBooklet, which also makes use of our animation library collection, [VPAnimEngine](https://github.com/stevesims/vpanimengine) and timeline handling library [VPTimelineHandler](https://github.com/stevesims/vptimelinehandler).
 
 ## Compatibility
 
