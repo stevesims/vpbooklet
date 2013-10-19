@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>VPBooklet Self-Contained Example</title>
+  
+  <link rel="stylesheet" href="../../vp-booklet.css" type="text/css" media="screen" charset="utf-8">
+  <style type="text/css" media="screen">
+  /* A very basic button */
+  .button {
+    margin: 8px;
+    padding: 8px;
+    border: 3px solid red;
+    border-radius: 8px;
+    width: 150px;
+  }
+  
+  /* show it in green on controller one */
+  .one-controller .button {
+    border-color: green;
+  }
+  
+  /* and in blue on controller two */
+  #two .button {
+    border-color: blue;
+  }
+  
+  /* a basic style for the "other" div, ensuring it doesn't get obscured by #navigation  */
+  #other {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* keyframe animation definitions for showing/hiding */
+  @keyframes slide-in-down {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes slide-out-up {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  </style>
+  
+  <!-- third-party libraries, required for VPBooklet -->
+  <script src="../../3rdparty/modernizr.custom.99559.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../3rdparty/prefixfree.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../3rdparty/sprintf.js" type="text/javascript" charset="utf-8"></script>
+  <!-- Load up VPUtils first, as VPBooklet relies on it -->
+  <script src="../../VPUtils.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../VPBooklet.js" type="text/javascript" charset="utf-8"></script>
+  
+  <!-- and now for our simple 3 controller app -->
+  <script type="text/javascript" charset="utf-8">
+  // a simple homeController, which shows two buttons
+  var homeController = new VPController({
+    name: "home",       // all controllers must have a name
+    viewDefinition: {   // a VPUtils.buildElement style view element definition
+      type: "div",
+      children: [
+        { type: "h1", textContent: "Home" },
+        { type: "div", className: "button one", textContent: "Show One" },
+        { type: "div", className: "button two", textContent: "Show Two" }
+      ]
+    },
+    actions: [          // some simple actions to go off to different controllers
+      { selector: ".one", action: "show", arguments: ["one"] },
+      { selector: ".two", action: "show", arguments: ["two"] }
+    ],
+    autoStart: true,    // we want this controller to automatically start
+    // (optionaly) define some animations to use when showing and hiding this controller
+    showAnimation: { name: 'slide-in-down', duration: 1 },
+    hideAnimation: { name: 'slide-out-up', duration: 1 }
+  });
+  
+  var oneController = new VPController({
+    name: "one",
+    viewClassName: "one-controller",  // this controller's view will get this class name set
+    displayReference: "main",         // controllers can be given a displayReference...
+    viewDefinition: {
+      type: "div",
+      children: [
+        { type: "h1", textContent: "Here's controller one!" },
+        { type: "div", className: "button home", textContent: "Go back home" },
+        {
+          type: "div",
+          children: [
+            { type: "textNode", textContent: "You have visited this controller " },
+            { type: "span", className: "counter" },
+            { type: "textNode", textContent: " times" }
+          ]
+        }
+      ]
+    },
+    actions: [
+      { selector: ".home", action: "show", arguments: ["home"] },
+    ],
+    outlets: [
+      { selector: ".counter", name: "counterSpan" }   // for this controller, we're defining a "counterSpan" outlet
+    ],
+    showAnimation: { name: 'slide-in-left', timingFunction: 'ease-out', duration: 1 },
+    hideAnimation: { name: 'slide-out-right', timingFunction: 'ease-in', duration: 1 },
+    // set up a variable that this controller can use to track number of times it's been shown
+    shownCounter: 0
+  });
+  // this controller gets a handleWillAppear method which will be called when this controller is about to appear
+  oneController.handleWillAppear = function handleWillAppear() {
+    // first up, increment the shownCounter value
+    this.shownCounter = this.shownCounter + 1;
+    // then we'll set the textContent of the counterSpan outlet to be this new value
+    this.counterSpan.textContent = this.shownCounter;
+  };
+
+  var twoController = new VPController({
+    name: "two",
+    viewID: "two",      // this controller's view element will get this set as its "id" value
+    parentSelector: "#other",   // explicitly set the selector for the parent element...
+    displayReference: "main",   // only one controller with this reference can be visible at a time
+    viewDefinition: {
+      type: "div",
+      children: [
+        { type: "h1", textContent: "Here's controller two!" },
+        { type: "div", className: "button one", textContent: "Show One" },
+        { type: "div", className: "button hello", textContent: "Say Hello" },
+        { type: "div", className: "button home", textContent: "Go back home" }
+      ]
+    },
+    actions: [
+      // this time, to show controller one we'll call the "show" action targetting the controller named "one"
+      // the displayReference system ensures that this controller will be hidden
+      { selector: ".one", action: "show", target: "one" },
+      // but for "home" we'll use this.show
+      { selector: ".home", action: "show", arguments: ["home"] },
+      // and wire up an action for the "hello" button
+      { selector: ".hello", action: "sayHello" }
+    ],
+    // this time we're going to delay the showing animation a little bit
+    // VPBooklet will automatically set the animation-fill-mode to help ensure styles are applied correctly
+    showAnimation: { name: 'fade-in', timingFunction: 'ease-in-out', duration: 1, delay: 0.5 },
+    hideAnimation: { name: 'fade-out', timingFunction: 'ease-in-out', duration: 1 }
+  });
+  // a very simple action
+  twoController.sayHello = function sayHello() {
+    window.alert("Hello!");
+  }
+  </script>
+</head>
+<body>
+  <!-- by default, VPBooklet uses #navigation as the parent element for controller views -->
+  <div id="navigation"></div>
+  <div id="other"></div>
+</body>
+</html>

@@ -945,7 +945,8 @@ window.VPController = (function() {
     view.style[Modernizr.prefixed("animationName")] = animation.name;
     view.style[Modernizr.prefixed("animationDuration")] = (animation.duration || 1) + 's';
     view.style[Modernizr.prefixed("animationDelay")] = (animation.delay || 0) + 's';
-    view.style[Modernizr.prefixed("animationFillMode")] = animation.fillMode || "none";
+    view.style[Modernizr.prefixed("animationFillMode")] =
+      animation.fillMode || (animation.delay && (animation.delay > 0)) ? "backwards" : "none";
     view.style[Modernizr.prefixed("animationTimingFunction")] = animation.timingFunction || "ease";
     view.addEventListener(kAnimEndEventName, this, false);
   };
