@@ -1,0 +1,8 @@
+/* Style definitions for the "two" controller */
+
+/* The "two" controller has it's viewID set to be "two", so we'll use #two in selectors */
+
+/* set buttons to be blue on controller two */
+#two .button {
+  border-color: blue;
+}

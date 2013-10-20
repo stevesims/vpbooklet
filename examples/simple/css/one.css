@@ -1,0 +1,8 @@
+/* Styles specific to the "one" controller */
+
+/* In this example the controller definition for "one" defines it's view to have a class of ".one-controller" */
+
+/* we'll show buttons in green on controller one */
+.one-controller .button {
+  border-color: green;
+}

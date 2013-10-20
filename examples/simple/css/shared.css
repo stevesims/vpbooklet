@@ -1,0 +1,66 @@
+/* shared.css contains CSS definitions that are intended to be shared across multiple controllers */
+
+/* A very basic button */
+.button {
+  margin: 8px;
+  padding: 8px;
+  border: 3px solid red;
+  border-radius: 8px;
+  width: 150px;
+}
+
+/* a basic style for the "other" div, ensuring it doesn't get obscured by #navigation  */
+#other {
+  position: relative;
+  z-index: 1;
+}
+
+/* keyframe animation definitions for showing/hiding */
+@keyframes slide-in-down {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slide-out-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

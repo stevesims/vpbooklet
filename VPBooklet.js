@@ -966,12 +966,14 @@ window.VPController = (function() {
       for (var i = 0; i < stylesheets.length; i++) {
         var sheet = stylesheets[i];
         var rules = sheet.cssRules;
-        for (var j = 0; j < rules.length; j++) {
-          var rule = rules[j];
-          if ((rule.type === CSSRule.KEYFRAMES_RULE) || (rule.type === CSSRule.WEBKIT_KEYFRAMES_RULE) || (rule.type === CSSRule.MOZ_KEYFRAMES_RULE)) {
-            if (rule.name === animName) {
-              found = true;
-              break;
+        if (rules) {
+          for (var j = 0; j < rules.length; j++) {
+            var rule = rules[j];
+            if ((rule.type === CSSRule.KEYFRAMES_RULE) || (rule.type === CSSRule.WEBKIT_KEYFRAMES_RULE) || (rule.type === CSSRule.MOZ_KEYFRAMES_RULE)) {
+              if (rule.name === animName) {
+                found = true;
+                break;
+              }
             }
           }
         }

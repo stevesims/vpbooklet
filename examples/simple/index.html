@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>VPBooklet Simple Example</title>
+  
+  <link rel="stylesheet" href="../../vp-booklet.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/shared.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/home.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/one.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/two.css" type="text/css" media="screen" charset="utf-8">
+  
+  <!-- third-party libraries, required for VPBooklet -->
+  <!-- by convention all of these libraries would normally live under the "lib" folder -->
+  <script src="../../3rdparty/modernizr.custom.99559.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../3rdparty/prefixfree.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../3rdparty/sprintf.js" type="text/javascript" charset="utf-8"></script>
+  
+  <!-- Load up VPUtils first, as VPBooklet relies on it -->
+  <script src="../../VPUtils.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../VPBooklet.js" type="text/javascript" charset="utf-8"></script>
+  
+  <!-- finally load the controllers -->
+  <script src="controllers/home.js" type="text/javascript" charset="utf-8"></script>
+  <script src="controllers/one.js" type="text/javascript" charset="utf-8"></script>
+  <script src="controllers/two.js" type="text/javascript" charset="utf-8"></script>
+  
+</head>
+<body>
+  <!-- by default, VPBooklet uses #navigation as the parent element for controller views -->
+  <div id="navigation"></div>
+  <div id="other"></div>
+</body>
+</html>
