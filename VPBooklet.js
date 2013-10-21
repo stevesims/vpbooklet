@@ -280,7 +280,6 @@ window.VPController = (function() {
         events.push("touchstart");
         events.push("touchmove");
         events.push("touchend");
-        events.push("click");
       } else {
         events.push("click");
       }
@@ -469,21 +468,14 @@ window.VPController = (function() {
     if (emulatedClick && event.currentTarget.touchInfo) {
       if ((Date.now() - event.currentTarget.touchInfo.time) < kTouchClickTime) {
         debug("emulating click");
-        // TODO: we need to track when this happens so we can prevent OS-initiated click
-        // since bloody Android doesn't obey this preventDefault
-        // stop the default stuff happening (i.e. native click)
         event.preventDefault();
-        // send a new click event manually
-        var newEvent = document.createEvent('MouseEvents');
-        newEvent.initMouseEvent('click', event.bubbles, event.cancelable, event.view, 
-          event.detail, event.screenX, event.screenY, event.clientX, event.clientY, 
-          event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, 
-          0, event.relatedTarget);
-        event.currentTarget.dispatchEvent(newEvent);
-
-        // TODO: code in Revok just did a preventDefault then the following:
-        // privateMethods.handleClick.call(this, event);
-        // need to check this out deeper
+        // Spoof an event object and send this through the event handling system as a click
+        var fakeEvent = {};
+        for (var prop in event) {
+          fakeEvent[prop] = event[prop];
+        }
+        fakeEvent.type = "click";
+        this.handleEvent(fakeEvent);
       }
       delete event.currentTarget.touchInfo;
     }

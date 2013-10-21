@@ -15,7 +15,7 @@ VPBooklet was initially design to aid the development of apps for iOS and Androi
 
 VPBooklet is a family of libraries, the heart of which is the VPController class (in VPBooklet.js) and the VPUtils.js utility library. There are other libraries that are members of this family, such as VPSlider.js and VPTabbed.js, which we will be releasing soon.
 
-Basic documentation will be added soon, as will some basic code examples.
+A couple of basic code examples are provided, and some basic documentation will be added soon.
 
 ## Real-life Examples
 
