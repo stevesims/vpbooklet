@@ -434,7 +434,9 @@ window.VPController = (function() {
           acted = true;
         }
       }, this);
-      if (acted) { event.stopPropagation(); }
+      if (acted) {
+        event.stopPropagation();
+      }
     }
   };
   
@@ -468,13 +470,18 @@ window.VPController = (function() {
     if (emulatedClick && event.currentTarget.touchInfo) {
       if ((Date.now() - event.currentTarget.touchInfo.time) < kTouchClickTime) {
         debug("emulating click");
-        event.preventDefault();
         // Spoof an event object and send this through the event handling system as a click
         var fakeEvent = {};
         for (var prop in event) {
           fakeEvent[prop] = event[prop];
         }
         fakeEvent.type = "click";
+        fakeEvent.stopPropagation = function() {
+          event.stopPropagation();
+        }
+        fakeEvent.preventDefault = function() {
+          event.preventDefault();
+        }
         this.handleEvent(fakeEvent);
       }
       delete event.currentTarget.touchInfo;
