@@ -63,7 +63,7 @@ window.VPUtils = (function() {
       var args = Array.prototype.slice.call(arguments, 3);
       var delayedFunction = function delayedFunction() {
         func.apply(obj, args);
-      }
+      };
       return setTimeout(delayedFunction, delay);
     },
     
@@ -81,7 +81,7 @@ window.VPUtils = (function() {
       var args = Array.prototype.slice.call(arguments, 3);
       var intervalFunction = function intervalFunction() {
         func.apply(obj, args);
-      }
+      };
       return setInterval(intervalFunction, interval);
     },
     
@@ -204,5 +204,5 @@ window.VPUtils = (function() {
         }
       }
     }
-  }
+  };
 }());
