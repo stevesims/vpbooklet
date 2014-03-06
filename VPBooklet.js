@@ -2,7 +2,7 @@
   VPBooklet
   A light-weight, extensible, HTML5/JS/CSS3 application framework
 
-  (c) 2011-13, Steve Sims and Vert Pixels Ltd.
+  (c) 2011-14, Steve Sims and Vert Pixels Ltd.
   All Rights Reserved
 
   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,10 +14,10 @@
 
   NB this code relies on the following libraries:
   VPUtils.js
-  sprintf.js
   Modernizr  (with support for detecting CSS3 Animations)
   PrefixFree
 */
+/*global  Modernizr, PrefixFree, VPUtils, Element, CSSRule */
 
 window.VPController = (function() {
   "use strict";
@@ -177,7 +177,7 @@ window.VPController = (function() {
       throw new TypeError("outlet named '" + outlet.name + "' cannot be used because it is a controller function");
     }
     
-    if (this._outlets.some(function(obj) { return outlet.name === obj.name })) {
+    if (this._outlets.some(function(obj) { return outlet.name === obj.name; })) {
       throw new TypeError("outlet named '" + outlet.name + "' was already defined");
     }
 
@@ -195,6 +195,7 @@ window.VPController = (function() {
   
   // private call to update outlets
   function processOutlets(outlets, oldView) {
+    /*jshint validthis: true */
     if (this.viewElement) {
       outlets.forEach(function(outlet) {
         var els = (outlet.global ? document : this.viewElement).querySelectorAll(outlet.selector);
@@ -224,7 +225,7 @@ window.VPController = (function() {
       this.clearActions(this);
       this.sendEvent('didProcessOutlets', oldView);
     }
-  };
+  }
   
   Object.defineProperty(controller.prototype, 'actions', {
     get: function getActions() {
@@ -289,7 +290,7 @@ window.VPController = (function() {
       action:     action.action,
       global:     !!action.global, 
       selector:   action.selector,
-      arguments:  action.arguments,
+      "arguments":  action["arguments"],
       sendEvent:  action.sendEvent,
       target:     action.target,
       onEvents:   events,
@@ -304,6 +305,7 @@ window.VPController = (function() {
   };
   
   function processActions(actions) {
+    /*jshint validthis: true */
     actions.forEach(function(action) {
       if (VPUtils.isString(action.action)) {
         var target = this;
@@ -332,7 +334,7 @@ window.VPController = (function() {
       // need to remove this action from existing elements associated with the action
       // if they're no longer in the view
       // so filter action.els for elements *not* in els
-      var filteredEls = action.elements.filter(function(el) { return els.indexOf(el) === -1 });
+      var filteredEls = action.elements.filter(function(el) { return els.indexOf(el) === -1; });
       // remove event listener and relevant action data from filtered els
       filteredEls.forEach(function(el) {
         var actionIndex = el.vpActions.indexOf(action);
@@ -368,7 +370,7 @@ window.VPController = (function() {
       }, this);
     }, this);
     this.sendEvent('didProcessActions', this.view);
-  };
+  }
   
   
   // Generic event handling system
@@ -377,8 +379,8 @@ window.VPController = (function() {
   // delegates will be checked first, then controller methods
   controller.prototype.handleEvent = function handleEvent(event) {
     var methodName = "_prevent" + event.type[0].toUpperCase() + event.type.slice(1);
-    var preventing;
-    for (var i = 0; i < delegates.length; i++) {
+    var preventing, i;
+    for (i = 0; i < delegates.length; i++) {
       preventing = VPUtils.callIfExists(delegates[i], methodName, this, event) || VPUtils.callIfExists(delegates[i], methodName.slice(1), this, event);
       if (preventing) {
         break;
@@ -387,7 +389,7 @@ window.VPController = (function() {
     preventing = preventing || VPUtils.callIfExists(this, methodName, this, event) || VPUtils.callIfExists(this, methodName.slice(1), this, event);
     if (!preventing) {
       methodName = methodName.replace('_prevent', 'handle');
-      for (var i = 0; i < delegates.length; i++) {
+      for (i = 0; i < delegates.length; i++) {
         VPUtils.callIfExists(delegates[i], methodName, this, event);
       }
       methodName = "_" + methodName;
@@ -411,8 +413,8 @@ window.VPController = (function() {
           if (action.sendEvent) {
             args.push(event);
           }
-          if (action.arguments) {
-            args = args.concat(action.arguments);
+          if (action["arguments"]) {
+            args = args.concat(action["arguments"]);
           }
           if (action.target) {
             if (VPUtils.isString(action.target)) {
@@ -456,8 +458,8 @@ window.VPController = (function() {
     // remove touch info from target if we've moved too far
     if (emulatedClick && event.currentTarget.touchInfo) {
       if (
-        (Math.abs(event.touches[0].clientX - event.currentTarget.touchInfo.x) > kTouchThreshold)
-        || (Math.abs(event.touches[0].clientY - event.currentTarget.touchInfo.y) > kTouchThreshold)
+        (Math.abs(event.touches[0].clientX - event.currentTarget.touchInfo.x) > kTouchThreshold) ||
+        (Math.abs(event.touches[0].clientY - event.currentTarget.touchInfo.y) > kTouchThreshold)
       ) {
         delete event.currentTarget.touchInfo;
       }
@@ -478,10 +480,10 @@ window.VPController = (function() {
         fakeEvent.type = "click";
         fakeEvent.stopPropagation = function() {
           event.stopPropagation();
-        }
+        };
         fakeEvent.preventDefault = function() {
           event.preventDefault();
-        }
+        };
         this.handleEvent(fakeEvent);
       }
       delete event.currentTarget.touchInfo;
@@ -489,7 +491,7 @@ window.VPController = (function() {
   };
   
   
-  privateMethods.handleDOMModified = function handleDOMModified(event) {
+  privateMethods.handleDOMModified = function handleDOMModified(/* event */) {
     processOutlets.call(this, this.outlets);
     processActions.call(this, this.actions);
   };
@@ -620,14 +622,14 @@ window.VPController = (function() {
       }
       return this.viewElement;
     },
-    set: function setView(view) {
+    set: function setView(/* view */) {
       // we don't support setting view this way - use viewElement instead
     }
   });
   
   Object.defineProperty(controller.prototype, 'visible', {
     get: function getVisible() {
-      return (this.viewElement && this.viewElement.parentNode) != undefined;
+      return !!(this.viewElement && this.viewElement.parentNode);
     }
   });
   
@@ -752,6 +754,7 @@ window.VPController = (function() {
   };
   
   function setViewParams(el, file, options) {
+    /*jshint validthis: true */
     var id, style, classNames = [];
     if (!file) {
       if (this.viewID)        { id = this.viewID; }
@@ -774,12 +777,12 @@ window.VPController = (function() {
       el = el.querySelector('#' + id);
     }
     if (id)                       { el.id = id; }
-    if (style)                    { el.style = options.style; };
+    if (style)                    { el.style = options.style; }
     if (classNames.length !== 0)  {
       classNames.forEach(function(className) { el.classList.add(className); });
     }
     return el;
-  };
+  }
   
   controller.prototype.addViewListeners = function addViewListeners(element) {
     kViewListeners.forEach(function(name) { element.addEventListener(name, this, false); }, this);
@@ -1061,7 +1064,7 @@ window.VPController = (function() {
     });
 
     return results;
-  }
+  };
   
   controller.haveController = function haveController(name) {
     if (name) {
@@ -1136,10 +1139,10 @@ window.VPController = (function() {
         controller.show();
       }
     }
-  }
+  };
   
   function loaded() {
-    if (window.iNativeApp) {
+    if (window.cordova) {
       window.setTimeout(function() {debug("we're native!"); }, 5000);
       debug("we're native");
       document.addEventListener('deviceready', startup, false);
